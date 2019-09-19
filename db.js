@@ -1,5 +1,5 @@
 const Sequelize = require ('sequelize');
-const { DECIMAL, STRING, UUID, UUIDV4 } = Sequelize;
+const { VIRTUAL, DECIMAL, STRING, UUID, UUIDV4 } = Sequelize;
 
 const conn = new Sequelize(process.env.DATABASE_URL || 'postgres://localhost/users_stories_reviews_db');
 
@@ -18,6 +18,12 @@ const User = conn.define('user', {
     lastName: {
         type: Sequelize.STRING,
         allowNull: false
+    },
+    fullName: {
+        type: VIRTUAL,
+        get: function(){
+            return `${this.firstName} ${this.lastName}`;
+        }
     }
 });
 const Story = conn.define('story', {
@@ -64,4 +70,4 @@ const syncAndSeed = async () => {
 
 syncAndSeed()
     .then(() => console.log('success'))
-    .catch(ex => console.log('ex'))
+    .catch(ex => console.log('ex')) 
