@@ -47,6 +47,9 @@ Review.belongsTo(Story);
 Story.hasMany(Review);
 User.hasMany(Review, {foreignKey: 'reviwerId'});
 
+User.belongsto(User, { as: 'manager'});
+User.hasMany(User, { as: 'manages', foreignKey: 'managerId'});
+
 const syncAndSeed = async () => {
     await conn.sync({ force: true});
     const users = [
@@ -65,9 +68,9 @@ const syncAndSeed = async () => {
    { reviewerId: larry.id, storyId: nodeStory.id, rating: 2 }, 
    { reviewerId: curly.id, storyId: nodeStory.id, rating: 4.3 }, 
 ];
- const  [larryReview, curlyReview] = await(Promise.all(reviews.map((review) => Review.create(review))));  
-};
+await(Promise.all(reviews.map((review) => Review.create(review))));  
 
-syncAndSeed()
-    .then(() => console.log('success'))
-    .catch(ex => console.log('ex')) 
+moe.managerId = larry.id;
+console.log(moe.get());
+
+};
