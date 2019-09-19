@@ -71,6 +71,16 @@ const syncAndSeed = async () => {
 await(Promise.all(reviews.map((review) => Review.create(review))));  
 
 moe.managerId = larry.id;
-console.log(moe.get());
+await moe.save();
 
+
+};
+
+module.exports = {
+    syncAndSeed,
+    models: {
+        User,
+        Story,
+        Review
+    }
 };
